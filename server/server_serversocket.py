@@ -8,7 +8,7 @@ from os import walk
 
 from tqdm import tqdm
 
-sys.path.append('./')
+sys.path.append('../')
 import header_utils
 from exception import FileNotFoundException
 
@@ -20,7 +20,8 @@ SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-DATASET = './server/dataset'
+# DATASET = './server/dataset'
+DATASET = './dataset'
 
 files = []
 
