@@ -5,6 +5,7 @@ from posixpath import splitext
 import socket
 import sys
 import os
+from time import time
 
 from tqdm import tqdm
 
@@ -97,14 +98,17 @@ def recv_file(header):
       f = open(f'{filename}', 'rb')
       decrypted_filename = splitext(filename)[0]
       decrypted_file = open(f'{decrypted_filename}', 'wb')
+      initial_time = time()
       decrypted_data = crypto.decrypt(f.read())
+      decrypt_time = time() - initial_time
+      print(f"Decryption Process takes about {decrypt_time} seconds")
       decrypted_file.write(decrypted_data)
       decrypted_file.close()
       f.close()
       os.remove(filename)
-      
+      filename = decrypted_filename
     
-    print('download success')
+    print(f'[SUCCESS] {filename} successfully downloaded')
 
 def split_byte_chunks(input, chunk_size):
   out_var = bytearray(len(input))
@@ -128,7 +132,10 @@ def send_file(filepath, crypto):
         encrypted_filepath = f'{TEMP_FOLDER}/{file_name}'
 
         if crypto:
-          encrypted = crypto.encrypt(f.read(), key)
+          initial_time = time()
+          encrypted = crypto.encrypt(f.read())
+          encrypt_time = time() - initial_time
+          print(f"Encryption Process takes about {encrypt_time} seconds")
           encrypted_file = open(encrypted_filepath, 'wb')
           encrypted_file.write(encrypted)
           encrypted_file.close()
@@ -192,7 +199,6 @@ def start():
         if msg.split(" ")[0] == "upload":
           try:
             select_crypto()
-            print(current_enc_function)
             send_file(msg.split(" ")[1], current_enc_function)
           except FileNotFoundException:
             send("[ERROR] Client tries to upload invalid filepath")
