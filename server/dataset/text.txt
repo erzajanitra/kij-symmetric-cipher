@@ -1,8 +1,1 @@
-Hello World!sssstype: 'msg',
-file-name: null,
-file-size: 122,                                                                                                                                                                                                                   List of files :
-0 : 1.PNG
-1 : 2.PNG
-2 : 5.png
-3 : text.txt
-Select file you want to download with command 'unduh nama_file'
+ó–U¸f‘‰È‚_nîÕN{Öçí,óHZØ*|ò›SËŠÜªýd-Ì®í·*‡…¨¶±2!¡.ëÿKOwÂå²Û5²y>Ï(c›û¯Î@}Ä~¬p¶ãï´bö¹àn¼)Š#Ì&ZJW_¢¯£ã£ùÐ‹µH*wØmMþ¯é®ÞwÆ×P;»O¨X;B{#vøÖ—aÜ¥ö?¸¡N±|èO-þ*c“yYdŸÃ¸â™m¡¡?Z®Ë-¥Õwphr­‰Õ±‹x-Ã=ªùÜÖd½Òž<‰C®Ï8©­Ó;J	?® Œ÷8c¬Icë†×ÏK¿è^t²”Z•Yk\Wižê˜EBEÂ–ˆˆ,KžD¤ƒù"š„#&T*ªÖÉé+²m7õ÷ËŒ¸­E!+;Í#vá¤[[nt»n3–3¥ZÄCÚÄÛöJOóæI°Ù×»G*^$K”…Ãîá ×]¾¨#–T#‡ºaKp¼ƒ[ÁP<jLŠG

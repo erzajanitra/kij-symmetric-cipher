@@ -26,8 +26,6 @@ DISCONNECT_MESSAGE = "!DISCONNECT"
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 
-TEMP_FOLDER = './temp'
-
 class CryptoAlgorithm:
   def __init__(self, name, encrypt, decrypt, ext) -> None:
      self.name = name
@@ -98,13 +96,17 @@ def recv_file(header):
       f = open(f'{filename}', 'rb')
       decrypted_filename = splitext(filename)[0]
       decrypted_file = open(f'{decrypted_filename}', 'wb')
+
       initial_time = time()
       decrypted_data = crypto.decrypt(f.read())
       decrypt_time = time() - initial_time
+
       print(f"Decryption Process takes about {decrypt_time} seconds")
+
       decrypted_file.write(decrypted_data)
       decrypted_file.close()
       f.close()
+      
       os.remove(filename)
       filename = decrypted_filename
     
@@ -122,25 +124,27 @@ def send_file(filepath, crypto):
     if os.path.isfile(filepath):
         file_size = os.path.getsize(filepath)
         file_name = os.path.basename(filepath)
-        if crypto:
-          file_name += crypto.ext
+
         header = header_utils.build_file_header(file_name, file_size)
         print(f'[SENDING] Client is sending file {file_name} to server')
         client.send(header)
-        f = open(filepath, 'rb')
-
-        encrypted_filepath = f'{TEMP_FOLDER}/{file_name}'
-
+        
         if crypto:
+          encrypted_filepath = file_name + crypto.ext
+
           initial_time = time()
           encrypted = crypto.encrypt(f.read())
           encrypt_time = time() - initial_time
+
           print(f"Encryption Process takes about {encrypt_time} seconds")
+
           encrypted_file = open(encrypted_filepath, 'wb')
           encrypted_file.write(encrypted)
           encrypted_file.close()
+          
           f = open(encrypted_filepath, 'rb')
-        
+        else:
+          f = open(filepath, 'rb')
         
         l = f.read(BUFFER_SIZE)
         
