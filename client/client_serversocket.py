@@ -117,7 +117,9 @@ def split_byte_chunks(input, chunk_size):
 def send_file(filepath, crypto):
     if os.path.isfile(filepath):
         file_size = os.path.getsize(filepath)
-        file_name = f'{os.path.basename(filepath)}{crypto.ext}'
+        file_name = os.path.basename(filepath)
+        if crypto:
+          file_name += crypto.ext
         header = header_utils.build_file_header(file_name, file_size)
         print(f'[SENDING] Client is sending file {file_name} to server')
         client.send(header)
@@ -151,7 +153,7 @@ def send_file(filepath, crypto):
         raise FileNotFoundException
 
 def command_list():
-  print("List of commands\n1. upload\n2. unduh\n 3.list")
+  print("List of commands\n1. upload\n2. download\n 3.list")
 
 def select_crypto():
   print("Available cryptography algorithms:")

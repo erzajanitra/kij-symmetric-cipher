@@ -114,7 +114,7 @@ def handle_client(conn, addr):
             connected = False
         else:
             cmd = res.split(' ')
-            if cmd[0] == 'unduh':
+            if cmd[0] == 'download':
                 dl_file = cmd[1]
                 try:
                   send_file(conn, addr, dl_file)
@@ -123,7 +123,7 @@ def handle_client(conn, addr):
             elif cmd[0] == 'upload':
                 recv(conn, addr)
             elif cmd[0] == 'list':
-                send(conn, addr, f"{listFiles()}Select file you want to download with command 'unduh nama_file'")
+                send(conn, addr, f"{listFiles()}Select file you want to download with command 'download nama_file'")
             else:
                 send(conn, addr, "Invalid command, please try again")
 
