@@ -109,7 +109,7 @@ def recv_file(header):
       decrypted_file.write(decrypted_data)
       decrypted_file.close()
       f.close()
-      
+
       os.remove(filename)
       filename = decrypted_filename
     
@@ -131,6 +131,9 @@ def send_file(filepath, crypto):
         header = header_utils.build_file_header(file_name, file_size)
         print(f'[SENDING] Client is sending file {file_name} to server')
         client.send(header)
+
+        
+        f = open(filepath, 'rb')
         
         if crypto:
           encrypted_filepath = file_name + crypto.ext
@@ -146,8 +149,7 @@ def send_file(filepath, crypto):
           encrypted_file.close()
           
           f = open(encrypted_filepath, 'rb')
-        else:
-          f = open(filepath, 'rb')
+        
         
         l = f.read(BUFFER_SIZE)
         
