@@ -17,7 +17,7 @@ from exception import FileNotFoundException
 
 from crypto.rc4 import RC4
 from crypto.DES import DES
-from crypto.AES import AES
+from crypto.AESEnc import AESEnc
 
 HEADER = 256
 BUFFER_SIZE = 1024
@@ -37,7 +37,7 @@ class CryptoAlgorithm:
 key = '12345678'
 des = DES(key, '12345678')
 rc4 = RC4(key)
-aes = AES(key) 
+aes = AESEnc(key+key) 
 crypto_algorithms = [
   CryptoAlgorithm('DES', des.encrypt, des.decrypt, '.des'),
   CryptoAlgorithm('RC4', rc4.encrypt, rc4.decrypt, '.rc4'),
