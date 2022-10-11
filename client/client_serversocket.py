@@ -17,6 +17,7 @@ from exception import FileNotFoundException
 
 from crypto.rc4 import RC4
 from crypto.DES import DES
+from crypto.AES import AES
 
 HEADER = 256
 BUFFER_SIZE = 1024
@@ -36,9 +37,11 @@ class CryptoAlgorithm:
 key = '12345678'
 des = DES(key, '12345678')
 rc4 = RC4(key)
+aes = AES(key) 
 crypto_algorithms = [
   CryptoAlgorithm('DES', des.encrypt, des.decrypt, '.des'),
-  CryptoAlgorithm('RC4', rc4.encrypt, rc4.decrypt, '.rc4')
+  CryptoAlgorithm('RC4', rc4.encrypt, rc4.decrypt, '.rc4'),
+  CryptoAlgorithm('AES', aes.encrypt, aes.decrypt, '.aes')
 ]
 current_enc_function = None
 
@@ -170,6 +173,7 @@ def select_crypto():
   print("Available cryptography algorithms:")
   print("0. DES")
   print("1. RC4")
+  print("2. AES")
   print("Select cryptography algorithms by typing their number below:")
   print("Skip by inserting any number to disable cryptography")
   print(">>", end=' ', flush=True)
