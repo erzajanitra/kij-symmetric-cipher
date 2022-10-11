@@ -1,7 +1,7 @@
 from Crypto.Cipher import AES
 from Crypto import Random
 
-class AES:
+class AESEnc:
     def __init__(self, key) -> None:
         self.key = bytes(key, 'utf-8')
 
