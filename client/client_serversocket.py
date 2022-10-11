@@ -8,6 +8,7 @@ import os
 from time import perf_counter, process_time, time
 import cv2
 import numpy as np
+import psutil
 
 from tqdm import tqdm
 
@@ -165,11 +166,15 @@ def send_file(filepath, crypto):
           encrypted_filepath = file_name + crypto.ext
 
           initial_time = (time(), perf_counter())
+          process = psutil.Process(os.getpid())
+          memory_before = process.memory_info().rss
           encrypted = crypto.encrypt(f.read())
+          memory_used = (process.memory_info().rss - memory_before) / 1024 ** 2
+          print(memory_used)
           encrypt_time = (time() - initial_time[0], perf_counter() - initial_time[1])
-
           print(f"Encryption Process takes about {encrypt_time[0]} seconds and {encrypt_time[1]} seconds of cpu time")
-
+          print(f"Memory used : {memory_used} MB")
+          
           encrypted_file = open(encrypted_filepath, 'wb')
           encrypted_file.write(encrypted)
           encrypted_file.close()
