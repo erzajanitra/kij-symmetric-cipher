@@ -128,13 +128,9 @@ def send_file(filepath, crypto):
         file_size = os.path.getsize(filepath)
         file_name = os.path.basename(filepath)
 
-        header = header_utils.build_file_header(file_name, file_size)
-        print(f'[SENDING] Client is sending file {file_name} to server')
-        client.send(header)
-
-        
         f = open(filepath, 'rb')
-        
+        header = ''
+
         if crypto:
           encrypted_filepath = file_name + crypto.ext
 
@@ -147,10 +143,16 @@ def send_file(filepath, crypto):
           encrypted_file = open(encrypted_filepath, 'wb')
           encrypted_file.write(encrypted)
           encrypted_file.close()
-          
+
+          header = header_utils.build_file_header(encrypted_filepath, file_size)
+
           f = open(encrypted_filepath, 'rb')
-        
-        
+        else:
+          header = header_utils.build_file_header(file_name, file_size)
+
+        print(f'[SENDING] Client is sending file {file_name} to server')
+        client.send(header)
+
         l = f.read(BUFFER_SIZE)
         
         with tqdm(total=file_size, unit='B', unit_scale=True, unit_divisor=1024) as pbar:
