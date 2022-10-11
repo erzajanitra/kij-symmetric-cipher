@@ -27,7 +27,7 @@ class RC4:
           
           yield sched[(sched[i] + sched[j]) % 256]        
 
-
+  
   def encrypt(self ,text):
       # ord : turn char into integer
       # text = [ord(char) for char in text]
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     if ed == 'E':
         # TO DO
         # Dynamic file input and integrate with server socket
-        with open('./crypto/1.png', 'rb') as plaintext_file:
+        with open('../crypto/1.png', 'rb') as plaintext_file:
           plaintext = plaintext_file.read()
 
         ciphertext = rc4.encrypt(plaintext) 

@@ -6,7 +6,7 @@ class AESEnc:
         self.key = bytes(key, 'utf-8')
 
     def pad(self, s):
-        return s + b"\0" * (AES.block_size - len(s) % AES.block_size)
+        return s + b"x" * (AES.block_size - len(s) % AES.block_size)
     
     def encrypt(self, data):
         data = self.pad(data)
@@ -18,4 +18,4 @@ class AESEnc:
         iv = ciphertext[:AES.block_size]
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
         plaintext = cipher.decrypt(ciphertext[AES.block_size:])
-        return plaintext.rstrip(b"\0")
+        return plaintext.rstrip(b"x")

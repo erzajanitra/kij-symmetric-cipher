@@ -5,7 +5,9 @@ from posixpath import splitext
 import socket
 import sys
 import os
-from time import time
+from time import perf_counter, process_time, time
+import cv2
+import numpy as np
 
 from tqdm import tqdm
 
@@ -78,6 +80,30 @@ def is_encrypted(file_name):
     
     return None
 
+def encrypt_to_png(filename, crypto):
+    img = cv2.imread(filename)
+    # print(img.shape)
+    # print(len(img.tobytes()))
+    if img.size % 16 > 0:
+      row = img.shape[0]
+      pad = 16 - (row % 16)
+      img = np.pad(img, ((0, pad), (0, 0), (0, 0)))
+      img[-1, -1, 0] = pad
+    
+    img_bytes = img.tobytes()
+    enc_img_bytes = crypto.encrypt(img_bytes)
+    enc_img = np.frombuffer(enc_img_bytes, np.uint8).reshape(img.shape)
+    cv2.imwrite(f'encrypted_{crypto.name}_{filename}', enc_img)
+
+def decrypt_to_png(filename, crypto):
+    enc_img = cv2.imread(filename)
+    dec_img_bytes = crypto.decrypt(enc_img.tobytes())
+    dec_img = np.frombuffer(dec_img_bytes, np.uint8).reshape(enc_img.shape)
+    pad = int(dec_img[-1, -1, 0])
+    dec_img = dec_img[0:-pad, :, :].copy()
+    cv2.imwrite(f'decrypted_{filename}', dec_img)
+
+
 def recv_file(header):
     filename, file_size = header_utils.read_file_header(header)
     max_loop = math.ceil(file_size / BUFFER_SIZE)
@@ -131,14 +157,18 @@ def send_file(filepath, crypto):
         f = open(filepath, 'rb')
         header = ''
 
+
         if crypto:
+          # Kalo mau matiin fungsi image encryptionnya comment aja 2 line dibawah
+          if splitext(filepath)[1] == '.png':
+            encrypt_to_png(file_name, crypto)
           encrypted_filepath = file_name + crypto.ext
 
-          initial_time = time()
+          initial_time = (time(), perf_counter())
           encrypted = crypto.encrypt(f.read())
-          encrypt_time = time() - initial_time
+          encrypt_time = (time() - initial_time[0], perf_counter() - initial_time[1])
 
-          print(f"Encryption Process takes about {encrypt_time} seconds")
+          print(f"Encryption Process takes about {encrypt_time[0]} seconds and {encrypt_time[1]} seconds of cpu time")
 
           encrypted_file = open(encrypted_filepath, 'wb')
           encrypted_file.write(encrypted)
